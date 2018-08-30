@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Tr3sEnLinea</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="player_1_0">Player 1:</string>
+    <string name="player_2_0">Player 2:</string>
+    <string name="reset">Reset</string>
+</resources>
