@@ -9,6 +9,9 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                resetGame();
             }
         });
     }
@@ -62,24 +65,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if (player1Turn) {
-            ((Button) v).setText("X");
-        } else {
-            ((Button) v).setText("O");
-        }
-
+        ((Button) v).setText("X");
         roundCount++;
-
         if (checkForWin()) {
-            if (player1Turn) {
-                player1Wins();
-            } else {
-                player2Wins();
-            }
-        } else if (roundCount == 9) {
+            player1Wins();
+        }
+        else if(roundCount == 9){
             draw();
-        } else {
-            player1Turn = !player1Turn;
+        }
+        cpuTurn();
+        roundCount++;
+        if (checkForWin()) {
+            player2Wins();
+        }
+        else if(roundCount == 9){
+            draw();
         }
 
     }
@@ -125,13 +125,77 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void player1Wins() {
+        player1Points++;
+        Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
+        updatePointsText();
+        resetBoard();
     }
 
     private void player2Wins() {
+        player2Points++;
+        Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
+        updatePointsText();
+        resetBoard();
     }
 
     private void draw() {
+        Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
+        resetBoard();
     }
+
+    private void updatePointsText() {
+        textViewPlayer1.setText("Player 1: " + player1Points);
+        textViewPlayer2.setText("Player 2: " + player2Points);
+    }
+
+    private void resetBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                buttons[i][j].setText("");
+            }
+        }
+
+        roundCount = 0;
+        player1Turn = true;
+    }
+
+    private void cpuTurn() {
+        int x = new Random().nextInt(3);
+        int y = new Random().nextInt(3);
+        while(!buttons[x][y].getText().toString().equals("")){
+            x = new Random().nextInt(3);
+            y = new Random().nextInt(3);
+        }
+        buttons[x][y].setText("O");
+    }
+
+    private void resetGame() {
+        player1Points = 0;
+        player2Points = 0;
+        updatePointsText();
+        resetBoard();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("roundCount", roundCount);
+        outState.putInt("player1Points", player1Points);
+        outState.putInt("player2Points", player2Points);
+        outState.putBoolean("player1Turn", player1Turn);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        roundCount = savedInstanceState.getInt("roundCount");
+        player1Points = savedInstanceState.getInt("player1Points");
+        player2Points = savedInstanceState.getInt("player2Points");
+        player1Turn = savedInstanceState.getBoolean("player1Turn");
+    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -152,6 +216,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
     };
-
 
 }
