@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Tr3sEnLinea</string>
     <string name="title_home">New Game</string>
-    <string name="title_dashboard">Difficulty</string>
+    <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Quit</string>
     <string name="player_1_0">Player 1:</string>
     <string name="player_2_0">CPU:</string>
     <string name="reset">Reset</string>
+    <string name="result_human_wins">Ganaste!</string>
+    <string name="difficulty_easy">Facil</string>
+    <string name="difficulty_harder">Dificil</string>
+    <string name="difficulty_expert">Experto</string>
 </resources>
